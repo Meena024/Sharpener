@@ -15,3 +15,8 @@ var title = document.getElementsByClassName('title');
 console.log(title[0].innerText);
 title[0].style.fontWeight='bold';
 title[0].style.color='green';
+var item = document.getElementsByClassName('list-group-item');
+item[2].style.background='green';
+var items = document.getElementById('items');
+items.style.fontWeight='bold';
+items.style.color='orange';
