@@ -20,3 +20,5 @@ item[2].style.background='green';
 var items = document.getElementById('items');
 items.style.fontWeight='bold';
 items.style.color='orange';
+var header = document.querySelector('#main-header');
+header.style.borderBottom = 'solid 3px black';
