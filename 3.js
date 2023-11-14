@@ -16,13 +16,14 @@ function addItem(e){
 
   // Get input value
   var newItem = document.getElementById('item').value;
+  var newItem1 = document.getElementById('newItem').value;
 
   // Create new li element
   var li = document.createElement('li');
   // Add class
   li.className = 'list-group-item';
   // Add text node with input value
-  li.appendChild(document.createTextNode(newItem));
+  li.appendChild(document.createTextNode(newItem+' '+newItem1));
 
   // Create del button element
   var deleteBtn = document.createElement('button');
@@ -35,6 +36,13 @@ function addItem(e){
 
   // Append button to li
   li.appendChild(deleteBtn);
+
+  var editButton = document.createElement("button");
+  editButton.className = "btn btn-warning btn-sm float-right edit";
+  editButton.textContent = "Edit";
+  editButton.style.background = "green";
+  li.appendChild(document.createTextNode(" "));
+  li.appendChild(editButton);
 
   // Append li to list
   itemList.appendChild(li);
@@ -76,3 +84,11 @@ listItems.forEach(function (item) {
   item.appendChild(document.createTextNode(" "));
   item.appendChild(editButton);
 });
+
+
+var newItemTextBox = document.createElement('input');
+        newItemTextBox.type = 'text';
+        newItemTextBox.className = 'form-control mr-2';
+        newItemTextBox.id = 'newItem';
+        document.getElementById('addForm').insertBefore(newItemTextBox, document.getElementById('item').nextSibling);
+      
