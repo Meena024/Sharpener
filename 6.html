@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Storing user details with local storage</title>
+</head>
+<body>
+
+    <label for="username">Username:</label>
+    <input type="text" id="username" placeholder="Enter your username">
+    <br><br>
+    <label for="email">Email:</label>
+    <input type="text" id="email" placeholder="Enter your email">
+    <br><br>
+    <label for="age">Age:</label>
+    <input type="text" id="age" placeholder="Enter your age">
+    <br><br>
+    <button onclick="storeUserDetails()">Save User Details</button>
+
+    <div id="userDetailsContainer">
+        <!-- Display stored user details here -->
+    </div>
+
+    <script type="text/javascript">
+
+        function storeUserDetails() {
+            // Get values from input fields
+            let username = document.getElementById("username").value;
+            let email = document.getElementById("email").value;
+            let age = document.getElementById("age").value;
+
+            // Create a user object
+            let newUser = {
+                username: username,
+                email: email,
+                age: age
+            };
+
+            // Retrieve existing user details from local storage or initialize an empty array
+            let existingUsers = JSON.parse(localStorage.getItem("users")) || [];
+
+            // Add the new user to the array
+            existingUsers.push(newUser);
+
+            // Serialize the updated user details array to JSON
+            let updatedUserDetails_serialized = JSON.stringify(existingUsers);
+
+            // Store the updated user details array in local storage
+            localStorage.setItem("users", updatedUserDetails_serialized);
+
+            // Log the entire local storage object to the console
+            console.log("Local Storage:", localStorage);
+
+            // Retrieve the updated user details array from local storage
+            let storedUserDetails = JSON.parse(localStorage.getItem("users"));
+
+            // Display stored user details
+            displayUserDetails(storedUserDetails);
+        }
+
+        function displayUserDetails(users) {
+            let userDetailsContainer = document.getElementById("userDetailsContainer");
+            userDetailsContainer.innerHTML = "<h2>Stored User Details:</h2>";
+
+            if (users && users.length > 0) {
+                users.forEach(user => {
+                    userDetailsContainer.innerHTML += `
+                        <p>Username: ${user.username}, Email: ${user.email}, Age: ${user.age}</p>
+                    `;
+                });
+            } else {
+                userDetailsContainer.innerHTML += "<p>No user details stored.</p>";
+            }
+        }
+
+        // Display stored user details when the page loads
+        displayUserDetails(JSON.parse(localStorage.getItem("users")));
+
+    </script>
+</body>
+</html>
