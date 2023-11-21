@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Storing user details with local storage</title>
+    </head>
+    <body>
+        <script type="text/javascript">
+
+        // Sample user details
+        let userDetails = {
+            username: "meena123",
+            email: "meena@example.com",
+            age: 28
+        };
+
+        // Log the original user details to the console
+        console.log("User Details:", userDetails);
+
+        // Serialize the user details to JSON
+        let userDetails_serialized = JSON.stringify(userDetails);
+
+        // Log the serialized user details to the console
+        console.log("Serialized User Details:", userDetails_serialized);
+
+        // Store the serialized user details in local storage
+        localStorage.setItem("userDetails", userDetails_serialized);
+
+        // Log the entire local storage object to the console
+        console.log("Local Storage:", localStorage);
+
+        // Retrieve the serialized user details from local storage and parse it back to a JavaScript object
+        let storedUserDetails = JSON.parse(localStorage.getItem("userDetails"));
+
+        // Log the deserialized user details to the console
+        console.log("Retrieved User Details:", storedUserDetails);
+        
+        </script>
+    </body>
+</html>
