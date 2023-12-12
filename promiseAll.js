@@ -32,26 +32,20 @@ function deletePost() {
   });
 }
 
-function handlePostCreationAndDeletion() {
-  const createPostPromise = createPost({ title: "New Post" });
-  const updateActivityPromise = updateLastUserActivityTime();
-
-  Promise.all([createPostPromise, updateActivityPromise])
-    .then(([_, updatedActivityTime]) => {
-      console.log("Posts:", posts); 
-      console.log("Last Activity Time:", updatedActivityTime);
-      return deletePost();
-    })
-    .then((deletedPost) => {
-      console.log("Deleted Post:", deletedPost);
-      console.log("Remaining Posts:", posts);
-      return deletePost();
-    })
-    .then((deletedPost) => {
-      console.log("Deleted Post:", deletedPost);
-      console.log("Remaining Posts:", posts);
-    })
-    .catch((error) => console.log(error));
+async function handlePostCreationAndDeletion() {
+  try{
+    await createPost({ title: "New Post" });
+    const updatedActivityTime = await updateLastUserActivityTime();
+    console.log("Posts:", posts); 
+    console.log("Last Activity Time:", updatedActivityTime);
+    const deletedPost1 = await deletePost();
+    console.log("Deleted Post:", deletedPost1);
+    console.log("Remaining Posts:", posts);
+    const deletedPost2 = await deletePost();
+    console.log("Deleted Post:", deletedPost2);
+    console.log("Remaining Posts:", posts);
+  } catch(err){
+    console.log(err);
+  }
 }
-
 handlePostCreationAndDeletion();
