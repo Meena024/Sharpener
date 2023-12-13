@@ -59,18 +59,20 @@
         }
 
         
-        function removeUser(key) {
-            localStorage.removeItem(key);
-
-            let storedUserDetails = Object.keys(localStorage).map(k => {
-                return {
-                    key: k,
-                    data: JSON.parse(localStorage.getItem(k))
-                };
-            });
-
-            displayUserDetails(storedUserDetails);
+        function removeUser(id) {
+            axios.delete(`${API_URL}/${id}`)
+                .then(response => {
+                    console.log('Success:', response.data);
+                    return axios.get(API_URL);
+                })
+                .then(response => {
+                    displayUserDetails(response.data);
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
         }
+
 
         function editUser(key) {
             let user = JSON.parse(localStorage.getItem(key));
