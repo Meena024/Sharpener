@@ -23,6 +23,17 @@
     <script type="text/javascript">
 
         const API_URL = 'https://crudcrud.com/api/5daed632f0d74acc94174c7ca2242dda/UserDetails'; 
+        
+        window.addEventListener("DOMContentLoaded", function () {
+            axios.get(API_URL)
+                .then(response => {
+                    displayUserDetails(response.data);
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                });
+        });
+
         function storeUserDetails() {
             let username = document.getElementById("username").value;
             let email = document.getElementById("email").value;
@@ -86,9 +97,9 @@
             if (users && users.length > 0) {
                 users.forEach(user => {
                     userDetailsContainer.innerHTML += `
-                        <p>Username: ${user.data.username}, Email: ${user.data.email}, Age: ${user.data.age}
-                            <button onclick="editUser('${user.key}')">Edit</button>
-                            <button onclick="removeUser('${user.key}')">Delete</button>
+                        <p>Username: ${user.username}, Email: ${user.email}, Age: ${user.age}
+                            <button onclick="editUser('${user._id}')">Edit</button>
+                            <button onclick="removeUser('${user._id}')">Delete</button>
                         </p>
                     `;
                 });
