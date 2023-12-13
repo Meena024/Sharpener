@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Storing user details with CrudCrud and Axios</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+
+    <label for="username">Username:</label>
+    <input type="text" id="username" placeholder="Enter your username">
+    <br><br>
+    <label for="email">Email:</label>
+    <input type="text" id="email" placeholder="Enter your email">
+    <br><br>
+    <label for="age">Age:</label>
+    <input type="text" id="age" placeholder="Enter your age">
+    <br><br>
+    <button onclick="storeUserDetails()">Save User Details</button>
+
+    <div id="userDetailsContainer">
+    </div>
+
+    <script type="text/javascript">
+
+        const API_URL = 'https://crudcrud.com/api/5daed632f0d74acc94174c7ca2242dda/UserDetails'; 
+        function storeUserDetails() {
+            let username = document.getElementById("username").value;
+            let email = document.getElementById("email").value;
+            let age = document.getElementById("age").value;
+
+            let newUser = {
+                username: username,
+                email: email,
+                age: age
+            };
+
+            axios.post(API_URL, newUser)
+                .then(response => {
+                    console.log('Success:', response.data);
+                    return axios.get(API_URL);
+                })
+                .then(response => {
+                    displayUserDetails(response.data);
+                })
+                .catch((error) => {
+                    console.error( error);
+                });
+        }
+
+        
+        function removeUser(key) {
+            localStorage.removeItem(key);
+
+            let storedUserDetails = Object.keys(localStorage).map(k => {
+                return {
+                    key: k,
+                    data: JSON.parse(localStorage.getItem(k))
+                };
+            });
+
+            displayUserDetails(storedUserDetails);
+        }
+
+        function editUser(key) {
+            let user = JSON.parse(localStorage.getItem(key));
+
+            document.getElementById("username").value = user.username;
+            document.getElementById("email").value = user.email;
+            document.getElementById("age").value = user.age;
+
+            localStorage.removeItem(key);
+
+            let storedUserDetails = Object.keys(localStorage).map(k => {
+                return {
+                    key: k,
+                    data: JSON.parse(localStorage.getItem(k))
+                };
+            });
+            displayUserDetails(storedUserDetails);
+        }
+
+        function displayUserDetails(users) {
+            let userDetailsContainer = document.getElementById("userDetailsContainer");
+            userDetailsContainer.innerHTML = "<h2>Stored User Details:</h2>";
+
+            if (users && users.length > 0) {
+                users.forEach(user => {
+                    userDetailsContainer.innerHTML += `
+                        <p>Username: ${user.data.username}, Email: ${user.data.email}, Age: ${user.data.age}
+                            <button onclick="editUser('${user.key}')">Edit</button>
+                            <button onclick="removeUser('${user.key}')">Delete</button>
+                        </p>
+                    `;
+                });
+            } else {
+                userDetailsContainer.innerHTML += "<p>No user details stored.</p>";
+            }
+        }
+    </script>
+</body>
+</html>
