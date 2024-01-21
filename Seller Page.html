@@ -34,8 +34,8 @@
         <legend style="font-size: large; font-weight: bold; border: 1px solid #000; padding-left: 10px; padding-right: 10px; background-color: aliceblue;">
             Products List
         </legend><br>
-        <button onclick="viewtraditional()" id="traditional" style="background-color: aliceblue; border: 1px solid black;">Traditional View</button>
-        <button onclick="viewtabulation()" id="tabular" style="background-color: aliceblue; border: 1px solid black;">Tabulation View</button>
+        <button onclick="viewtraditional()" id="traditional" style="font-weight: bold; background-color: aliceblue; border: 1px solid black;">Traditional View</button>
+        <button onclick="viewtabulation()" id="tabulational" style="background-color: aliceblue; border: 1px solid black;">Tabulation View</button>
         <br><br>
         
         <input type="text" id="search" list="suggestions" oninput="showsuggestions()">
@@ -57,7 +57,7 @@
     </fieldset>
     <script type="text/javascript">
 
-        const API_URL = 'https://crudcrud.com/api/3ef9ac04b9284e13a698ae81a05f3578/product_details'; 
+        const API_URL = 'https://crudcrud.com/api/5348647e93a84cf08b1a6d57b896f6be/product_details'; 
         let displaydata;
         let view = 'traditional';
         function capitalizeEachWord(text) {
@@ -85,11 +85,19 @@
 
         function viewtraditional(){
             view = 'traditional';
+            var tradition = document.getElementById("traditional");
+            var tabular = document.getElementById("tabulational");
+            tradition.style.fontWeight = "bold";
+            tabular.style.fontWeight = "normal";
             displayTraditional(displaydata);
         }
 
         function viewtabulation(){
             view = 'tabulational';
+            var tradition = document.getElementById("traditional");
+            var tabular = document.getElementById("tabulational");
+            tradition.style.fontWeight = "normal";
+            tabular.style.fontWeight = "bold";
             displayTabulation(displaydata);
         }
 
@@ -113,10 +121,6 @@
             let product_name = capitalizeEachWord(document.getElementById("product_name").value.trim());
             let category = document.getElementById("category").value.trim();
             let product_description = document.getElementById("product_description").value.trim();
-            document.getElementById("price").value = "";
-            document.getElementById("product_name").value = "";
-            document.getElementById("category").value = "";
-            document.getElementById("product_description").value = "";
             removeExclamationMark(document.getElementById("price"));
             removeExclamationMark(document.getElementById("product_name"));
             removeExclamationMark(document.getElementById("category"));
@@ -148,6 +152,10 @@
             .catch((error) => {
                 console.error( error);
             });
+            document.getElementById("price").value = "";
+            document.getElementById("product_name").value = "";
+            document.getElementById("category").value = "";
+            document.getElementById("product_description").value = "";
         }
 
         
@@ -284,10 +292,14 @@
 
         function sort() {
             let type = document.getElementById("sort").value;
-            displaydata.sort((a, b) => a[type].localeCompare(b[type]));
+            if (type === 'price') {
+                displaydata.sort((a, b) => (parseInt(a.price,10) - parseInt(b.price,10)));
+            } else {
+                displaydata.sort((a, b) => a[type].localeCompare(b[type]));
+            }
+
             (view == 'traditional') ? displayTraditional(displaydata) : displayTabulation(displaydata);
         }
-
 
         async function showsuggestions() {
             let input = document.getElementById('search').value.toLowerCase();
